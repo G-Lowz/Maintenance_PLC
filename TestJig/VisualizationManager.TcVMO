@@ -49,10 +49,10 @@
             <d n="FbMethods" t="CaseInsensitiveHashtable" ckt="String" cvt="Guid">
               <v>FB_Init</v>
               <v>e10fc694-42de-46b5-a62b-280293a3c571</v>
-              <v>FB_Exit</v>
-              <v>49235bef-36a2-4cd1-9d76-3cc8814692ff</v>
               <v>FB_Reinit</v>
               <v>0827d878-a407-4611-b60a-d45370e2d7ae</v>
+              <v>FB_Exit</v>
+              <v>49235bef-36a2-4cd1-9d76-3cc8814692ff</v>
             </d>
             <v n="FbName">"__VisuInitInstantiation_Fb"</v>
             <v n="FbGuid">{26345823-0052-4449-b57d-43d68783fa70}</v>
@@ -61,7 +61,7 @@
             <o n="AvailableKeys" t="DeviceBasedHotkeysProvider">
               <v n="Modifiers">7</v>
               <v n="DevType">4096</v>
-              <v n="DevId">"1002 0001"</v>
+              <v n="DevId">"1002 0004"</v>
               <v n="DevVersion">"1.0.0.6"</v>
               <v n="BaseProvider">{cb73a13e-6ccc-4bc6-8859-f5aa98bb116b}</v>
               <l n="Keys" t="ArrayList" cet="DeviceBasedHotkeyItem">

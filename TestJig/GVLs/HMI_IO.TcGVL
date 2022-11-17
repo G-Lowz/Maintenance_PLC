@@ -21,6 +21,8 @@ VAR_GLOBAL
 	
 	iEncoderOffset  : REAL;
 	
+	//pagecontrol
+	HMI_Page		: INT := 1;
 
 END_VAR]]></Declaration>
   </GVL>

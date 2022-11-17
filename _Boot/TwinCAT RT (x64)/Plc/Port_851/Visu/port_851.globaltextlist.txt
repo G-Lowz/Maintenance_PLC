@@ -1,0 +1,99 @@
+Id;Default
+183;%d
+353;%f
+4;%s
+275;<
+313;>
+571;AI
+436;Alarm
+206;Authorised Personnel Use Only
+918;before terminating any input
+356;Black
+776;Bypass
+547;Bypass NIU
+869;Close
+954;CURRENTVISU
+957;DI
+536;DO
+207;DO NOT STARE INTO BEAM
+678;E-Stop
+952;E-Stop 1
+677;E-Stop 2
+470;EK1100
+620;EK1904
+256;EL1004
+376;EL1008
+521;EL6900
+343;Encoder
+272;Encoder Reading
+194;E_Stop 1
+703;F0
+978;F1
+891;F2
+290;F3
+968;F4
+587;F5
+411;F6
+997;Forward
+30;Forward NIU
+953;Input I1
+820;Input I2
+689;Input I3
+416;Input I3+
+919;Input I3-
+305;Input I4
+111;Input I4+
+763;Input I4-
+70;Input I5
+158;Input I6
+590;Input I7
+825;Input I8
+636;Issue:
+564;Issue: PC Isn$'t reading/connecting to EK1100. Used a new one but same result.
+157;Issue: We cannot connect to EK1100. Used a new one but same result.
+518;Laser Distance (mm)
+494;LASER LIGHT
+860;Laser Light 
+357;Laser Light Donot Stare into Beam
+836;Main
+359;MC
+72;Navigate through pages/screens
+310;Offset
+517;or output in any module
+235;Output O1
+910;Output O2
+749;Output O3
+669;Output O4
+34;Output O5
+327;Output O6
+164;Output O7
+250;Output O8
+743;Overload
+841;Raw
+955;Raw Value
+516;Reset
+574;Reset E-Stop
+984;Reset NIU
+524;Reverse
+652;Reverse NIU
+395;Run TS
+826;Safety
+31;Scale
+960;Scaleing
+348;Scaling
+489;Start
+830;Start/Running
+388;Stop
+301;Switch OFF power supply to PLC
+839;Test
+449;Test Button 1
+882;Time ON delay %s
+926;TS Channel
+637;TS Channel 3
+398;TS Channel 4
+770;using buttons
+977;WAN Scale:
+365;WAN Scale: 0.0002636080
+228;We need ideas to program in this test jig.
+220;We now have connections to I/Os, We need ideas to program in this test jig.
+970;White
