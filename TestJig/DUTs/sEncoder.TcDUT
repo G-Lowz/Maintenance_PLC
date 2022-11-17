@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <DUT Name="sEncoder" Id="{c2316150-e0c1-4cd5-a116-50a8496ab8e0}">
+    <Declaration><![CDATA[TYPE sEncoder :
+STRUCT
+	bDataError  	AT %I* : BIT;
+	bFrameError 	AT %I* : BIT;
+	bPowerFail		AT %I* : BIT;
+	bSyncError		AT %I* : BIT;
+	bPDOState		AT %I* : BIT;
+	bPDOToggle		AT %I* : BIT;
+	uCounter		AT %I* : UDINT;
+	bInputToggle	AT %I* : BIT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <GVL Name="HMI_IO" Id="{98913a29-55be-45d4-8cd2-c11e04183ac3}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	//MC Lamps
+	bMCStartLamp	: BOOL;
+	bMCStopLamp		: BOOL;
+	bMCResetEstop	: BOOL; 
+	bMCForwardlamp	: BOOL;
+	bMCReserveLamp	: BOOL;
+	
+	//Safety Lamp
+	bSafetyResetLamp	: BOOL;
+	
+	//DO Lamps
+	bDOStartLamp	: BOOL;
+	bDOForwardLamp	: BOOL;
+	bDOResetLamp	: BOOL;
+	bDOReverselamp	: BOOL;
+	
+	iEncoderOffset  : REAL;
+	
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

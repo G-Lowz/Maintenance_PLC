@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="MC" Id="{809264f6-585b-4a63-b4a9-f649718cd946}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MC
+VAR
+	bMotorControlEnabled 	: BOOL := FALSE;
+	iState					: INT := 0;
+	sState					: WSTRING;
+	tonAuxON				: TON;
+	bEstopEngaged			: BOOL;
+	tonDelay				: TON;
+	tDelay					: TIME := T#5S;
+	sAlarm					: WSTRING := " ";
+	tReversing				: TIME;
+	tForward				: TIME;
+	bTimerOff				: BOOL := FALSE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Inputs();
+
+CASE iState OF
+	0: sState := "E-Stop engaged";
+			//HMI_IO.bDOStartLamp := FALSE;
+			Module_IO.oStartLamp := FALSE;
+			TS.oMotorON := FALSE;
+			TS.oReverse := FALSE;
+			TS.oForward := FALSE;
+			tonDelay(IN:=FALSE);
+	  	IF NOT bEstopEngaged THEN 
+			sState := "E-Stop disengaged";
+			IF Module_IO.iResetButton THEN 
+				TS.oReset := TRUE;
+				iState := 5;
+	  		END_IF
+		ELSE
+			sState := "E-Stop engaged";
+		END_IF
+		IF Main.tonFlash.Q THEN
+			//HMI_IO.bMCResetEstop := NOT HMI_IO.bMCResetEstop;
+			Module_IO.oResetButton := NOT Module_IO.oResetButton;
+		END_IF
+		bTimerOff := FALSE;
+	
+	5:	sState := "Ready to Start Motor";
+		TS.oReset := FALSE;
+		bTimerOff := FALSE;
+	    IF bMotorControlEnabled AND NOT bEstopEngaged THEN 
+			tonDelay(IN:=FALSE);
+			TS.oReverse := FALSE;
+			TS.oForward := FALSE;
+			//HMI_IO.bMCResetEstop := FALSE;
+			Module_IO.oResetButton := FALSE;
+			TS.oMotorON := FALSE;
+			
+			IF Main.tonFlash.Q THEN
+				//HMI_IO.bDOStartLamp := NOT HMI_IO.bDOStartLamp;
+				Module_IO.oStartLamp := NOT Module_IO.oStartLamp;
+			END_IF
+			IF Module_IO.iStartButton THEN
+				iState := 10;
+			END_IF
+		ELSIF bEstopEngaged THEN
+			iState := 0;
+		END_IF
+		
+	10: sState := "Motor Forward/Reverse Control Enabled";
+		TS.oMotorON := TRUE;
+		Module_IO.oStartLamp := TRUE;
+		tonDelay(IN:=FALSE);
+		bTimerOff := FALSE;
+		IF bMotorControlEnabled AND NOT bEstopEngaged THEN
+			IF Module_IO.iForward THEN 
+				iState := 20;
+			ELSIF Module_IO.iReverse THEN
+				iState := 30;
+			END_IF
+		ELSIF bEstopEngaged THEN
+			iState := 0;
+		ELSIF NOT bMotorControlEnabled THEN
+			iState := 5;
+		END_IF
+		
+	
+	20: sState := "Running Forward";
+		
+		IF TS.oForward AND bMotorControlEnabled THEN
+			bTimerOff := TRUE;
+			tonDelay(IN:=Module_IO.iForward, PT:=tDelay, Q=>, ET=>tForward); //Safety when swtching the motor to reverse
+			IF tonDelay.Q THEN 
+				Module_IO.oForward := TRUE;
+				//tonDelay(IN:=FALSE);
+				bTimerOff := FALSE;
+				(* tonAuxOn(IN:=TRUE, PT:=T#20S, Q=>, ET=>);
+				IF Module_IO.iMotorContactorAux AND NOT tonAuxOn.Q THEN 
+					tonAuxON(IN:=FALSE);
+				ELSE
+					sAlarm := "Forward Control issue, Press Emergency Stop";
+					Module_IO.oForward := FALSE;
+					iState := 100;
+				END_IF  *)
+			END_IF
+		ELSE 
+			Module_IO.oForward := FALSE;
+			tonDelay(IN:=FALSE);
+			iState := 10;
+		END_IF
+		IF NOT bMotorControlEnabled THEN
+			iState := 5;
+		ELSIF bEstopEngaged THEN
+			iState := 0;
+		END_IF
+		
+	30: sState := "Running Reverse";
+	
+		IF TS.oReverse AND bMotorControlEnabled THEN
+			bTimerOff := TRUE;
+			tonDelay(IN:=Module_IO.iReverse, PT:=tDelay, Q=>, ET=>tReversing); //Safety when swtching the motor to reverse
+			IF tonDelay.Q THEN 
+				Module_IO.oReverse := TRUE;
+				//tonDelay(IN:=FALSE);
+				bTimerOff := FALSE;
+				(*tonAuxOn(IN:=TRUE, PT:=T#20S, Q=>, ET=>);
+				IF Module_IO.iMotorContactorAux AND NOT tonAuxOn.Q THEN 
+					tonAuxON(IN:=FALSE);
+				ELSE
+					sAlarm := "Reverser Control issue, Press Emergency Stop";
+					Module_IO.oForward := FALSE;
+					iState := 100;
+				END_IF *)
+			END_IF
+		ELSE 
+			Module_IO.oReverse := FALSE;
+			tonDelay(IN:=FALSE);
+			iState := 10;
+		END_IF
+		IF NOT bMotorControlEnabled THEN
+			iState := 5;
+		ELSIF bEstopEngaged THEN
+			iState := 0;
+		END_IF
+		
+    100: 
+		sState := "Alarm: {sALARM}";
+		TS.oMotorON := FALSE;
+		bTimerOff := FALSE;
+		Module_IO.oStartLamp := FALSE;
+		IF Main.tonFlash.Q THEN
+			//HMI_IO.bMCResetEstop := NOT HMI_IO.bMCResetEstop;
+			Module_IO.oResetButton := NOT Module_IO.oResetButton;
+		END_IF
+	
+END_CASE
+
+//First thing to check in case motor is not running
+bMotorControlEnabled := Module_IO.iStopButton;// AND NOT Module_IO.iMotorOverLoad;
+bEstopEngaged := NOT TS.iEStop1 OR NOT TS.iEStop2;
+TS.oOverload := FALSE; //Indicator Only
+
+	
+
+ 
+
+	
+]]></ST>
+    </Implementation>
+    <Action Name="Inputs" Id="{3d897027-50b9-4c10-8557-88afed10ddf6}">
+      <Implementation>
+        <ST><![CDATA[//From Twinsafe
+
+TS.oForward := Module_IO.iForward;
+TS.oReverse := Module_IO.iReverse;
+
+Module_IO.oForward := TS.iForward;
+Module_IO.oReverse := TS.iReverse;
+
+//TS.oContactor := Module_IO.iMotorContactorAux;
+TS.oOverload := Module_IO.iMotorOverLoad;
+
+
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="MC">
+      <LineId Id="276" Count="0" />
+      <LineId Id="286" Count="0" />
+      <LineId Id="274" Count="0" />
+      <LineId Id="399" Count="0" />
+      <LineId Id="404" Count="0" />
+      <LineId Id="400" Count="3" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="146" Count="0" />
+      <LineId Id="391" Count="0" />
+      <LineId Id="271" Count="0" />
+      <LineId Id="408" Count="0" />
+      <LineId Id="272" Count="0" />
+      <LineId Id="270" Count="0" />
+      <LineId Id="392" Count="1" />
+      <LineId Id="153" Count="0" />
+      <LineId Id="396" Count="2" />
+      <LineId Id="395" Count="0" />
+      <LineId Id="454" Count="0" />
+      <LineId Id="273" Count="0" />
+      <LineId Id="155" Count="0" />
+      <LineId Id="409" Count="0" />
+      <LineId Id="455" Count="0" />
+      <LineId Id="158" Count="0" />
+      <LineId Id="321" Count="0" />
+      <LineId Id="369" Count="1" />
+      <LineId Id="159" Count="0" />
+      <LineId Id="295" Count="0" />
+      <LineId Id="160" Count="0" />
+      <LineId Id="206" Count="0" />
+      <LineId Id="161" Count="1" />
+      <LineId Id="259" Count="0" />
+      <LineId Id="157" Count="0" />
+      <LineId Id="172" Count="2" />
+      <LineId Id="170" Count="1" />
+      <LineId Id="156" Count="0" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="165" Count="0" />
+      <LineId Id="178" Count="2" />
+      <LineId Id="460" Count="0" />
+      <LineId Id="167" Count="0" />
+      <LineId Id="289" Count="2" />
+      <LineId Id="177" Count="0" />
+      <LineId Id="292" Count="0" />
+      <LineId Id="175" Count="0" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="405" Count="0" />
+      <LineId Id="407" Count="0" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="456" Count="0" />
+      <LineId Id="211" Count="0" />
+      <LineId Id="188" Count="0" />
+      <LineId Id="423" Count="0" />
+      <LineId Id="197" Count="0" />
+      <LineId Id="457" Count="0" />
+      <LineId Id="298" Count="0" />
+      <LineId Id="300" Count="0" />
+      <LineId Id="311" Count="0" />
+      <LineId Id="438" Count="0" />
+      <LineId Id="461" Count="0" />
+      <LineId Id="312" Count="5" />
+      <LineId Id="365" Count="0" />
+      <LineId Id="301" Count="0" />
+      <LineId Id="303" Count="0" />
+      <LineId Id="200" Count="1" />
+      <LineId Id="320" Count="0" />
+      <LineId Id="202" Count="0" />
+      <LineId Id="199" Count="0" />
+      <LineId Id="203" Count="1" />
+      <LineId Id="318" Count="1" />
+      <LineId Id="205" Count="0" />
+      <LineId Id="212" Count="0" />
+      <LineId Id="194" Count="0" />
+      <LineId Id="422" Count="0" />
+      <LineId Id="343" Count="0" />
+      <LineId Id="458" Count="0" />
+      <LineId Id="344" Count="2" />
+      <LineId Id="439" Count="0" />
+      <LineId Id="462" Count="0" />
+      <LineId Id="347" Count="5" />
+      <LineId Id="364" Count="0" />
+      <LineId Id="353" Count="10" />
+      <LineId Id="186" Count="0" />
+      <LineId Id="378" Count="0" />
+      <LineId Id="267" Count="0" />
+      <LineId Id="325" Count="0" />
+      <LineId Id="371" Count="0" />
+      <LineId Id="459" Count="0" />
+      <LineId Id="372" Count="0" />
+      <LineId Id="374" Count="2" />
+      <LineId Id="373" Count="0" />
+      <LineId Id="377" Count="0" />
+      <LineId Id="141" Count="0" />
+      <LineId Id="339" Count="2" />
+      <LineId Id="95" Count="0" />
+      <LineId Id="410" Count="0" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="232" Count="0" />
+      <LineId Id="127" Count="0" />
+      <LineId Id="129" Count="0" />
+      <LineId Id="83" Count="1" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+    <LineIds Name="MC.Inputs">
+      <LineId Id="6" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="1" Count="1" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <GVL Name="TS" Id="{6980a6d5-0e82-4640-b86f-93c7895c03e4}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	//Safety Mat
+	iSafetyMat1		AT %I* : BOOL; //Safety Mat input 1 
+	iSafetyMat2		AT %I* : BOOL; //Safety Mat input 2 
+	iSafetyMatAlarm AT %I* : BOOL; // For E-stop or Safety mat alarm
+	
+	// E-Stop
+	iEStop1 		AT %I* : BOOL; // E-Stop Contact 1
+	iEStop2 		AT %I* : BOOL; // E-Stop Contact 2
+	iEStopAlarm 	AT %I* : BOOL; 
+	
+	//From Std module Reset.sds
+	oReset			AT %Q* : BOOL;
+	
+	//Run and Err Ack sds
+	oRunInput		AT %Q* : BOOL;
+	oRunOutput		AT %Q* : BOOL;
+	oErrAckInput	AT %Q* : BOOL;
+	oErrAckOutput	AT %Q* : BOOL;
+	
+	// For Motor control MotorOn.sds
+	oMotorON		AT %Q* : BOOL;
+	iMotorEStop 	AT %I* : BOOL;
+	iMotorOkToRun 	AT %I* : BOOL;
+	iForward		AT %I* : BOOL;
+	iReverse		AT %I* : BOOL;
+	oForward		AT %Q* : BOOL;
+	oReverse		AT %Q* : BOOL;
+	oOverload		AT %Q* : BOOL;
+	oContactor		AT %Q* : BOOL;
+
+END_VAR
+]]></Declaration>
+  </GVL>
+</TcPlcObject>

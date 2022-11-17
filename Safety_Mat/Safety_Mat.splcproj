@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Crc="627330071" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{bb419397-c0d7-4596-a557-2b177700d7ab}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>TwinCAT3SafePlcProject</RootNamespace>
+    <AssemblyName>TwinCAT3SafePlcProject</AssemblyName>
+    <FileUpgradeFlags />
+    <UpgradeBackupLocation />
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetSystem>EL6900</TargetSystem>
+    <ProgrammingLanguage>Graphical Editor</ProgrammingLanguage>
+    <Worker>Glenn Lopez</Worker>
+    <IntProjName>Untitled1</IntProjName>
+    <IsNewCreated>false</IsNewCreated>
+    <SPlcProjVersion>1.7.0.0</SPlcProjVersion>
+    <Name>Safety_Mat</Name>
+    <NextSdsId>78</NextSdsId>
+    <DocuEditor>Glenn Lopez/Rona Joseph</DocuEditor>
+    <PlotDate>2022-04-20</PlotDate>
+    <CompanyName>Timbertruss</CompanyName>
+    <CompanyLogo>Timbertruss</CompanyLogo>
+    <FbPerPage>0</FbPerPage>
+    <AddUserAdministrationPages>False</AddUserAdministrationPages>
+    <AddProjectVersionHistoryPages>False</AddProjectVersionHistoryPages>
+    <AddCustomPages>False</AddCustomPages>
+    <TextBox />
+    <AddMultiSettingDocuments>False</AddMultiSettingDocuments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Input\Alias Devices\Term 11 %28EL2904%29.sds" />
+    <None Include="Input\Alias Devices\Reset.sds" />
+    <None Include="Input\Alias Devices\Term 2 %28EL1904%29.sds" />
+    <None Include="Output\Alias Devices\Run.sds" />
+    <None Include="Output\Alias Devices\ForwardCommand.sds" />
+    <None Include="Output\Alias Devices\InputForward.sds" />
+    <None Include="Output\Alias Devices\InputOL.sds" />
+    <None Include="Output\Alias Devices\InputReverse.sds" />
+    <None Include="Output\Alias Devices\MotorEStopOk.sds" />
+    <None Include="Output\Alias Devices\MotorOK.sds" />
+    <None Include="Output\Alias Devices\ReverseCommand.sds" />
+    <None Include="Output\Alias Devices\InputMotorON.sds" />
+    <None Include="TargetSystemConfig.xml">
+      <Visible>false</Visible>
+    </None>
+    <None Include="Input\Alias Devices\ErrorAcknowledgement.sds" />
+    <None Include="Input\Alias Devices\Run.sds" />
+    <None Include="Input\Input.sal" />
+    <None Include="Input\Input.sal.diagram">
+      <Visible>false</Visible>
+      <DependentUpon>Input\Input.sal</DependentUpon>
+    </None>
+    <None Include="Output\Alias Devices\ErrorAcknowledgement.sds" />
+    <None Include="Output\Output.sal" />
+    <None Include="Output\Output.sal.diagram">
+      <Visible>false</Visible>
+      <DependentUpon>Output\Output.sal</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GVLs" />
+    <Folder Include="Input" />
+    <Folder Include="Input\Alias Devices" />
+    <Folder Include="Output" />
+    <Folder Include="Output\Alias Devices" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <DocumentationProperty>
+      <ProjectVersionHistories />
+    </DocumentationProperty>
+  </ProjectExtensions>
+</Project>

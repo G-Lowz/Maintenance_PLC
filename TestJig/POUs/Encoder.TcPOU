@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="Encoder" Id="{30275c88-29ac-483c-a832-a56134260256}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Encoder
+VAR
+	//Encoder1 : Link to EL5001
+	nRawData 		: REAL;
+	nScaling 		: REAL;
+	nOffset 		: REAL;
+	nVoltage 		: REAL;
+	testEncoder		: sEncoder;
+	sScalingTable 	: ARRAY[0..2] OF WSTRING := ["Stacker Table WAN", "WT3 WAN"];
+	iScaleTable		: INT := 0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+IF iScaleTable=0 THEN
+	nScaling := 0.0004224;
+ELSIF  iScaleTable=1 THEN
+	nScaling := 0.0002636080;
+ELSE
+	nScaling := 0.0004224;
+END_IF
+ 
+//nCounter := UDINT_TO_REAL(Encoder1.
+//testEncoder.bInputToggle := TRUE;
+nVoltage := UDINT_TO_REAL(testEncoder.uCounter) * nScaling + nOffset;
+	
+(*
+IF Module_IO.iBypassSwitch THEN
+	testEncoder.bInputToggle := TRUE;
+	nVoltage := UDINT_TO_REAL(testEncoder.uCounter) * nScaling;
+ELSE
+	testEncoder.bInputToggle := FALSE;
+END_IF
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="Encoder">
+      <LineId Id="45" Count="1" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="62" Count="1" />
+      <LineId Id="66" Count="1" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="33" Count="1" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="30" Count="1" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

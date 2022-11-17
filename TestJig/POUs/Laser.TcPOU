@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="Laser" Id="{c67e9438-5fda-48d0-a654-0ce65fa0f93f}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Laser
+VAR
+	nLaserRawValue 	AT %I* 	: INT := 0;
+	nLaserOffset			: INT := 200;
+	tmpVal					: INT;
+	sLaserError		AT %I*	: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF nLaserRawValue > 16#6C00 THEN
+	Module_IO.nLaserValue:= 0;
+ELSE
+	tmpVal:= (WORD_TO_INT(nLaserRawValue * 4800 / 16#6C00)+ nLaserOffset);
+	Module_IO.nLaserValue:= tmpVal;
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="Laser">
+      <LineId Id="12" Count="4" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="21" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="MAIN" Id="{d38ddc88-20e8-4c06-9049-cd007a78ceeb}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	tonFlash : TON;
+	tDelay	: TIME := T#500MS;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Opening other POUs
+Encoder();
+Safety();
+Laser();
+MC();
+
+//LED Flash control
+tonFlash(IN:=NOT tonFlash.Q, PT:=tDelay, Q=>);
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="43" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="35" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

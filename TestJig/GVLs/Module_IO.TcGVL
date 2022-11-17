@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <GVL Name="Module_IO" Id="{c969f872-aae6-41d4-8cb3-a99a2896f322}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	iResetButton		AT %I* 	: BOOL;	//Reset Button EL1008 I1
+	iBypassSwitch		AT %I* 	: BOOL; //Bypass Switch EL1008 I2
+	iTestInput			AT %I* 	: ARRAY[3..6] OF BOOL; //EL1008 I3- I6 FOR testing sensors
+	iMotorOverLoad		AT %I* 	: BOOL; //EL1008 I7
+	iMotorContactorAux	AT %I* 	: BOOL; //EL1008 I8
+	
+	oStartLamp			AT %Q* 	: BOOL; //Start button Lamp EL2004 I1
+	oForward			AT %Q* 	: BOOL; //Selector switch EL2004 I2
+	oResetButton		AT %Q* 	: BOOL; //Reset button Lamp EL2004 I3
+	oReverse			AT %Q* 	: BOOL; //Selector switch EL2004 I4
+	
+	iStartButton		AT %I* 	: BOOL;	//Start Button EL1004 I1
+	iStopButton			AT %I* 	: BOOL;	//Stop Button EL1004 I2
+	iForward			AT %I* 	: BOOL;	//Selector Switch Forward EL1004 I3
+	iReverse			AT %I* 	: BOOL;	//Selector Switch Reverse EL1004 I4
+	
+	nLaserValue			AT %I*  : REAL;
+	nEncoderValue		AT %I*  : UDINT;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>
